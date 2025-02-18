@@ -12,6 +12,19 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+
+        <style>
+            pre {
+                background-color: #fefcfc;
+                color: #373e43;
+                padding: 15px;
+                border-radius: 5px;
+                overflow-x: auto;
+                white-space: pre-wrap; /* Para que el código se ajuste al contenedor */
+                font-size: 14px;
+                line-height: 1;
+            }
+        </style>
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
@@ -137,7 +150,37 @@
                                 Como no hay retardos ni cambios en el estado del pin, este permanecerá siempre en alto, 
                                 manteniendo activado cualquier dispositivo conectado.
                             </p>
-                                      
+                            
+                            <pre>
+                                void setup() {
+                                    // put your setup code here, to run once:
+                                    pinMode(13, OUTPUT);
+                                  
+                                  }
+                                  
+                                  void loop() {
+                                    // put your main code here, to run repeatedly:
+                                    digitalWrite(13, HIGH);
+                                  
+                                  }
+                            </pre>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
+                            <iframe
+                                src="https://wokwi.com/projects/423201965644533761"
+                                width="100%"
+                                height="600px"
+                                style="border: none;">
+                            </iframe>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
+                            <center><figure class="mb-4" align="center">
+                                <video width="50%"  controls>
+                                    <source src="video/ESP32_Led_Encendido.mp4" type="video/mp4">
+                                </video>
+                                </figure>
+                            </center>
+
                             <p id="diseño">
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Diseño</h1>
                             <p class="fs-6 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe. The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe. The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.</p>
