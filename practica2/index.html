@@ -106,22 +106,21 @@
                                                    
                         <p class="fs-6 mb-4">
                         </p>
-                            Además, se programará la detección de movimiento a través de un sensor PIR.                      
+                            Para concluir esta práctica, se programará la detección de movimiento a través de un sensor PIR.                      
                         <p id="intro">
 
                         
                         <h2 class="fw-bolder mb-4 mt-5 fs-5" >- Introducción -</h2>
                         <p class="fs-6 mb-4">
-                            El ESP32 es un microcontrolador con conectividad WiFi y Bluetooth, utilizado en proyectos de IoT y 
-                            automatización. Su arquitectura, múltiples pines GPIO y soporte para diversos 
-                            protocolos de comunicación lo hacen ideal para aplicaciones avanzadas.    
+                            Un sensor es un dispositivo que detecta el cambio en el entorno y responde a alguna salida en el 
+                            otro sistema. Un sensor convierte un fenómeno físico en un voltaje analógico medible (o, a veces, 
+                            una señal digital) convertido en una pantalla legible para humanos o transmitida para lectura o 
+                            procesamiento adicional.  
                         </p>
                         <p class="fs-6 mb-4">
-                            En esta práctica, se explorará el uso de sus entradas y salidas digitales, comenzando con la 
-                            configuración del IDE de Arduino para programarlo. Se revisará el pinout del ESP32 y sus GPIO. 
-                            Posteriormente, se desarrollarán programas básicos para controlar un LED, incluyendo su encendido y 
-                            apagado mediante diferentes códigos, retardos y el uso de botones. Además, se implementarán 
-                            condiciones lógicas OR y AND para gestionar el LED con dos botones.
+                            Para ello, se utilizarán herramientas como Vokwi o Arduino IDE para programar el ESP32 y realizar 
+                            pruebas con diferentes tipos de sensores. Se trabajará con un botón para detectar señales digitales, 
+                            un potenciómetro para leer valores analógicos y un sensor DHT22 para medir temperatura y humedad. 
                         </p>
                         
                         <p id="materiales">
@@ -133,6 +132,9 @@
                                 <li><b>Resistencia 220Ω: </b>1</li>
                                 <li><b>Botones: </b>2</li>
                                 <li><b>Resistencias 1KΩ:</b>2</li>
+                                <li><b>Potenciómetro: </b>1</li>
+                                <li><b>DHT22: </b>1</li>
+                                <li><b>PIR: </b>1</li>
                                 <li><b>Protoboard: </b>1</li>
                                 <li><b>Cables: </b>16</li>
                             </ul>
@@ -140,35 +142,51 @@
                         <p id="desarrollo">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Desarrollo -</h2>
                         <p class="fs-6 mb-4">
-                            En esta sección, se explicará de manera detallada el proceso completo para llevar a cabo la 
-                            simulación y construcción del circuito. Se abordará cada etapa, desde la configuración del 
-                            entorno de desarrollo hasta la implementación final del circuito, garantizando que el código 
-                            como la conexión de los componentes sean correctos. 
+                            En esta sección, se detallará el proceso completo para la simulación y construcción del circuito 
+                            utilizando sensores digitales, analógicos e inteligentes con el ESP32. Se explicará cada etapa, 
+                            desde la configuración del entorno de desarrollo en Wokwi o Arduino IDE, hasta la implementación 
+                            del código y la conexión de los sensores.
                         </p>
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Encendido</h1>
+                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Digital</h2>
                             <p class="fs-6 mb-4">
-                                En este código se configura el pin 23 como salida, permitiendo que este pin controle el LED 
-                                conectado. En la función loop(), que se ejecuta en un bucle infinito, en donde el pin en estado alto. 
-                                Como no hay retardos ni cambios en el estado del pin, este permanecerá siempre en alto, 
-                                manteniendo activado cualquier dispositivo conectado.
+                                Los sensores digitales operan de forma binaria, proporcionando únicamente dos estados posibles, 
+                                como activado o desactivado. Su lectura se realiza a través de un GPIO configurado como entrada 
+                                digital, permitiendo detectar cambios en su estado.
+                            </p>
+
+                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">Botón>
+                            <p class="fs-6 mb-4">
+                                En este código se configura el pin 23 como salida para controlar un LED, y el pin 34 como 
+                                entrada para leer el estado de un botón. En la función loop(), que se ejecuta en un bucle 
+                                infinito, se lee el estado del botón y, si está presionado, el LED se enciende. Si el botón no 
+                                está presionado, el LED se apaga. Esto permite controlar el encendido del LED de manera 
+                                manual a través del botón.
                             </p>
                             
                             <pre>
                                 int led=23;
+                                int button=34;
+                                int buttonState=0;
                                 void setup() {
                                     // put your setup code here, to run once:
                                     pinMode(23,OUTPUT);
+                                    pinMode(34,INPUT);
                                 }
 
                                 void loop() {
-                                    digitalWrite(led, HIGH);
+                                    buttonState=digitalRead(button);
+                                    if(buttonState==1){
+                                        digitalWrite(led,HIGH);
+                                    }
+                                    if (buttonState==0){
+                                        digitalWrite(led,LOW);
+                                    }
                                 }
-
                             </pre>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
                             <iframe
-                                src="https://wokwi.com/projects/423273008932482049"
+                                src="https://wokwi.com/projects/423293029874999297"
                                 width="100%"
                                 height="600px"
                                 style="border: none;">
@@ -178,11 +196,11 @@
                             <center>
                                 <figure class="mb-4" align="center">
                                     <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_Led_Encendido.mp4" type="video/mp4">
+                                        <source src="video/ESP32_BOTON.mp4" type="video/mp4">
                                     </video>
                                 </figure>
                             </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_LED_ENCENDIDO.ino">ESP32_LED_ENCENDIDO</a> </p>
+                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_BOTON.ino">ESP32_BOTON</a> </p>
 
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Apagado</h1>
@@ -430,7 +448,7 @@
 
                         <p id="referencias">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Referencias -</h2>
-                        <p class="fs-6 mb-4">Santos, S., & Santos, S. (2024, 24 octubre). ESP32 Pinout Reference: Which GPIO pins should you use? | Random Nerd Tutorials. Random Nerd Tutorials. <a href="https://randomnerdtutorials.com/esp32-pinout-reference-gpios/">https://randomnerdtutorials.com/esp32-pinout-reference-gpios/</a></p>
+                        <p class="fs-6 mb-4">¿Qué es un sensor y qué hace? (2024, 21 noviembre). Soluciones de Adquisición de Datos (DAQ).<a href="https://dewesoft.com/es/blog/que-es-un-sensor">https://dewesoft.com/es/blog/que-es-un-sensor</a></p>
                         
                         <p id="descargables">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Descargables -</h2>
