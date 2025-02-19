@@ -332,18 +332,77 @@
                             </center>
                             <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_DHT.ino">ESP32_DHT</a> </p>
 
+
+                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">PIR
+                            <p class="fs-6 mb-4">
+                                En este código se configura el pin 23 como salida para controlar un LED y el pin 33 como entrada 
+                                para leer el estado de un sensor PIR. En la función loop(), que se ejecuta de manera continua, 
+                                se lee el estado del sensor PIR. Si se detecta movimiento, el LED se enciende y, si el 
+                                movimiento se detiene, el LED se apaga. 
+                            </p>
+                            
+                            <pre>
+                                #define led 23               
+                                #define PIR 33             
+                                
+                                //Variables globales
+                                int pirState = LOW;           
+                                int val = 0;                
+                                
+                                void setup() {
+                                    pinMode(led, OUTPUT);   
+                                    pinMode(PIR, INPUT);   
+                                    Serial.begin(115200);
+                                }
+                                
+                                void loop() {
+                                    val = digitalRead(PIR);  
+                                    if (val == HIGH) {            
+                                        digitalWrite(led, HIGH); 
+                                        if (pirState == LOW) {
+                                            Serial.println("Motion detected!");
+                                            pirState = HIGH;
+                                        }
+                                    } else {
+                                        digitalWrite(led, LOW); 
+                                        if (pirState == HIGH) {
+                                            Serial.println("Motion ended!");
+                                            pirState = LOW;
+                                        }
+                                    }
+                                }                
+                            </pre>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
+                            <iframe
+                                src="https://wokwi.com/projects/423299778674216961"
+                                width="100%"
+                                height="600px"
+                                style="border: none;">
+                            </iframe>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
+                            <center>
+                                <figure class="mb-4" align="center">
+                                    <video width="55%" height="300" controls>
+                                        <source src="video/" type="video/mp4">
+                                    </video>
+                                </figure>
+                            </center>
+                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_PIR.ino">ESP32_PIR</a> </p>
+
                         <p id="conclusiones">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Conclusiones -</h2>
                         <p class="fs-6 mb-4">
-                            A lo largo de esta práctica, se exploró el uso de entradas y salidas digitales del ESP32, 
-                            permitiendo implementar diferentes funciones básicas de control. Se programaron circuitos que 
-                            facilitaron desde la activación de un LED mediante distintas condiciones lógicas hasta la 
-                            generación de parpadeos.
+                            A lo largo de la práctica se exploraron y comprendieron los principios de funcionamiento de los 3
+                            diferentes tipos de sensores: digitales, analógicos e inteligentes, utilizando el ESP32. Se 
+                            configuraron los pines de entrada y salida de manera adecuada, tanto para leer las señales de los 
+                            sensores como para controlar el LED que había conectado. 
                         </p>
 
                         <p class="fs-6 mb-4">
-                            Mediante el uso de estructuras condicionales, se pueden diseñar sistemas básicos de control, 
-                            como encender un LED con un solo botón (lógica OR) o exigir la activación simultánea de dos botones (lógica AND). Estos conceptos son fundamentales para desarrollar aplicaciones más complejas en sistemas embebidos e IoT.
+                            Además, se utilizó la comunicación serial para mostrar los datos capturados por los sensores, lo 
+                            que proporcionó una retroalimentación importante sobre el comportamiento del sistema.
                         </p>
 
                         <p id="referencias">
