@@ -182,7 +182,7 @@
                             </center>
 
 
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Encendido</h1>
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Apagado</h1>
                             <p class="fs-6 mb-4">
                                 En este código se configura el pin 23 como salida, permitiendo que este pin controle el LED 
                                 conectado. En la función loop(), que se ejecuta en un bucle infinito, en donde el pin en estado bajo. 
@@ -219,6 +219,46 @@
                                     </video>
                                 </figure>
                             </center>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Parpadeo</h1>
+                            <p class="fs-6 mb-4">
+                                En este código se configura el pin 23 como salida, y lo alterna entre alto y bajo con un 
+                                retardo de 500 ms en cada cambio, lo que hace que un LED conectado a ese pin parpadee de 
+                                forma continua.
+                            </p>
+                            
+                            <pre>
+                                int led=23;
+                                void setup() {
+                                    // put your setup code here, to run once:
+                                    pinMode(23,OUTPUT);
+                                }
+
+                                void loop() {
+                                digitalWrite(led, HIGH);
+                                delay(500);
+                                digitalWrite(led, LOW);
+                                delay(500);
+                                }   
+                            </pre>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
+                            <iframe
+                                src="https://wokwi.com/projects/423273866805176321"
+                                width="100%"
+                                height="600px"
+                                style="border: none;">
+                            </iframe>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
+                            <center>
+                                <figure class="mb-4" align="center">
+                                    <video width="55%" height="300" controls>
+                                        <source src="video/ESP32_Led_Parpadeo.mp4" type="video/mp4">
+                                    </video>
+                                </figure>
+                            </center>
+
 
 
                             <p id="diseño">
