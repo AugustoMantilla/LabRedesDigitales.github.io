@@ -154,7 +154,7 @@
                                 digital, permitiendo detectar cambios en su estado.
                             </p>
 
-                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">Botón>
+                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">Botón
                             <p class="fs-6 mb-4">
                                 En este código se configura el pin 23 como salida para controlar un LED, y el pin 34 como 
                                 entrada para leer el estado de un botón. En la función loop(), que se ejecuta en un bucle 
@@ -203,30 +203,52 @@
                             <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_BOTON.ino">ESP32_BOTON</a> </p>
 
 
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Apagado</h1>
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Analógico</h1>
                             <p class="fs-6 mb-4">
-                                En este código se configura el pin 23 como salida, permitiendo que este pin controle el LED 
-                                conectado. En la función loop(), que se ejecuta en un bucle infinito, en donde el pin en estado bajo. 
-                                Como no hay retardos ni cambios en el estado del pin, este permanecerá siempre en bajo, 
-                                manteniendo activado cualquier dispositivo conectado.
+                                Los sensores analógicos proporcionan valores de salida continuos que varían en un rango de 
+                                voltaje, dependiendo de la resolución del ADC del microcontrolador. En el caso del ESP32 
+                                tiene un ADC de 12 bits, los valores van de 0 a 4096. Para realizar la lectura de estos 
+                                valores, se utiliza un GPIO con un canal analógico, permitiendo medir la variación de 
+                                voltaje del sensor y obtener datos más precisos.
+                            </p>
+
+                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">Potenciómetro
+                            <p class="fs-6 mb-4">
+                                En este código se configura el pin 23 como salida para controlar un LED, y el pin 34 como 
+                                entrada para leer el valor de un potenciómetro. En la función loop(), que se ejecuta en un 
+                                bucle infinito, se lee el valor analógico del potenciómetro. Si el valor leído es mayor o 
+                                igual a 1024, el LED se enciende, de lo contrario, el LED se apaga.
                             </p>
                             
                             <pre>
                                 int led=23;
+                                int pot=34;
+                                
+                                int potValue=0;
+                                
                                 void setup() {
-                                    // put your setup code here, to run once:
-                                    pinMode(23,OUTPUT);
+                                  // put your setup code here, to run once:
+                                  pinMode(23,OUTPUT);
+                                  pinMode(34,INPUT);
                                 }
-
+                                
                                 void loop() {
-                                    digitalWrite(led, LOW);
-                                }
-
+                                  
+                                  potValue=analogRead(pot);
+                                
+                                  if(potValue>=1024){
+                                    digitalWrite(led,HIGH);
+                                  }
+                                  else{
+                                    digitalWrite(led,LOW);
+                                  }
+                                
+                                }                             
                             </pre>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
                             <iframe
-                                src="https://wokwi.com/projects/423273261797666817"
+                                src="https://wokwi.com/projects/423297372636341249"
                                 width="100%"
                                 height="600px"
                                 style="border: none;">
@@ -236,11 +258,11 @@
                             <center>
                                 <figure class="mb-4" align="center">
                                     <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_Led_Apagado.mp4" type="video/mp4">
+                                        <source src="video/ESP32_POTENCIOMETRO.mp4" type="video/mp4">
                                     </video>
                                 </figure>
                             </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_LED_APAGADO.ino">ESP32_LED_APAGADO</a> </p>
+                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_POTENCIOMETRO.ino">ESP32_POTENCIOMETRO</a> </p>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Parpadeo</h1>
                             <p class="fs-6 mb-4">
