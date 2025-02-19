@@ -306,6 +306,56 @@
                                 </figure>
                             </center>
 
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">OR</h1>
+                            <p class="fs-6 mb-4">
+                                En este código el pin 23 como salida para controlar un LED y los pines 34 y 35 como entradas 
+                                para leer el estado de dos botones. En el loop(), se verifica continuamente si alguno de los 
+                                botones está presionado. Si al menos uno de ellos está presionado, el LED se enciende, si 
+                                ninguno está presionado, el LED se apaga.
+                            </p>
+                            
+                            <pre>
+                                int led=23;
+                                int button_1=34;
+                                int button_2=35;
+                                int buttonState_1=0;
+                                int buttonState_2=0;
+                                void setup() {
+                                    // put your setup code here, to run once:
+                                    pinMode(led,OUTPUT);
+                                    pinMode(button_1,INPUT);
+                                    pinMode(button_2,INPUT);
+                                }
+
+                                void loop() {
+                                    buttonState_1=digitalRead(button_1);
+                                    buttonState_2=digitalRead(button_2);
+                                    if((buttonState_1==1) || (buttonState_2==1)){
+                                        digitalWrite(led,HIGH);
+                                    }
+                                    else{
+                                        digitalWrite(led,LOW);
+                                    }
+                                }
+                            </pre>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
+                            <iframe
+                                src="https://wokwi.com/projects/423278186641390593"
+                                width="100%"
+                                height="600px"
+                                style="border: none;">
+                            </iframe>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
+                            <center>
+                                <figure class="mb-4" align="center">
+                                    <video width="55%" height="300" controls>
+                                        <source src="video/ESP32_Led_2_Botones_OR.mp4" type="video/mp4">
+                                    </video>
+                                </figure>
+                            </center>
+
                             <p id="diseño">
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Diseño</h1>
                             <p class="fs-6 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe. The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe. The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.</p>
