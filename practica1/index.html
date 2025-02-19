@@ -145,7 +145,7 @@
                         </p>
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Encendido</h1>
                             <p class="fs-6 mb-4">
-                                En este código se configura el pin 4 como salida, permitiendo que este pin controle el LED 
+                                En este código se configura el pin 23 como salida, permitiendo que este pin controle el LED 
                                 conectado. En la función loop(), que se ejecuta en un bucle infinito, en donde el pin en estado alto. 
                                 Como no hay retardos ni cambios en el estado del pin, este permanecerá siempre en alto, 
                                 manteniendo activado cualquier dispositivo conectado.
@@ -180,6 +180,46 @@
                                     </video>
                                 </figure>
                             </center>
+
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Encendido</h1>
+                            <p class="fs-6 mb-4">
+                                En este código se configura el pin 23 como salida, permitiendo que este pin controle el LED 
+                                conectado. En la función loop(), que se ejecuta en un bucle infinito, en donde el pin en estado bajo. 
+                                Como no hay retardos ni cambios en el estado del pin, este permanecerá siempre en bajo, 
+                                manteniendo activado cualquier dispositivo conectado.
+                            </p>
+                            
+                            <pre>
+                                int led=23;
+                                void setup() {
+                                    // put your setup code here, to run once:
+                                    pinMode(23,OUTPUT);
+                                }
+
+                                void loop() {
+                                    digitalWrite(led, LOW);
+                                }
+
+                            </pre>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
+                            <iframe
+                                src="https://wokwi.com/projects/423273261797666817"
+                                width="100%"
+                                height="600px"
+                                style="border: none;">
+                            </iframe>
+
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
+                            <center>
+                                <figure class="mb-4" align="center">
+                                    <video width="55%" height="300" controls>
+                                        <source src="video/ESP32_Led_Apagado.mp4" type="video/mp4">
+                                    </video>
+                                </figure>
+                            </center>
+
 
                             <p id="diseño">
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Diseño</h1>
