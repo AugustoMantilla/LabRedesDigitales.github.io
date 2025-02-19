@@ -264,31 +264,59 @@
                             </center>
                             <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_POTENCIOMETRO.ino">ESP32_POTENCIOMETRO</a> </p>
 
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Parpadeo</h1>
+                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Inteligente</h1>
                             <p class="fs-6 mb-4">
-                                En este código se configura el pin 23 como salida, y lo alterna entre alto y bajo con un 
-                                retardo de 500 ms en cada cambio, lo que hace que un LED conectado a ese pin parpadee de 
-                                forma continua.
+                                Los sensores inteligentes son dispositivos que van más allá de las simples lecturas digitales o 
+                                analógicas, ya que su funcionamiento o complejidad requiere el uso de protocolos de 
+                                comunicación, puertos específicos del microcontrolador o medición de tiempos. Estos sensores 
+                                suelen ser más sofisticados.
+                            </p>
+
+                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">DHT22
+                            <p class="fs-6 mb-4">
+                                En este código se configura el pin 23 como salida para controlar un LED y se utiliza el sensor 
+                                DHT22 conectado al pin 33 para medir la temperatura y la humedad. En la función loop(), que se 
+                                ejecuta continuamente, el sensor lee la temperatura y la humedad cada segundo. Estos valores 
+                                se envían al monitor seria. Si la humedad medida es mayor o igual al 50%, el LED se enciende, 
+                                y si la humedad es menor a ese valor, el LED se apaga.
                             </p>
                             
                             <pre>
                                 int led=23;
+                                int temperatura=0;
+                                int humedad=0;
+                                #include <DHT.h>
+                                DHT dht(33,DHT22);
+
                                 void setup() {
                                     // put your setup code here, to run once:
                                     pinMode(23,OUTPUT);
+                                    dht.begin();
+                                    Serial.begin(115200);
                                 }
 
                                 void loop() {
-                                digitalWrite(led, HIGH);
-                                delay(500);
-                                digitalWrite(led, LOW);
-                                delay(500);
-                                }   
+                                delay(1000);
+                                temperatura=dht.readTemperature();
+                                humedad=dht.readHumidity();
+
+                                Serial.print("Temperatura:");
+                                Serial.println(temperatura);
+                                Serial.print("Humedad:");
+                                Serial.println(humedad);
+
+                                if(humedad>=50){
+                                    digitalWrite(led,HIGH);
+                                }
+                                else{
+                                    digitalWrite(led,LOW);
+                                }
+                            }                 
                             </pre>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
                             <iframe
-                                src="https://wokwi.com/projects/423273866805176321"
+                                src="https://wokwi.com/projects/423298701672146945"
                                 width="100%"
                                 height="600px"
                                 style="border: none;">
@@ -298,161 +326,11 @@
                             <center>
                                 <figure class="mb-4" align="center">
                                     <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_Led_Parpadeo.mp4" type="video/mp4">
+                                        <source src="video/ESP32_DHT.mp4" type="video/mp4">
                                     </video>
                                 </figure>
                             </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_LED_PARPADEO.ino">ESP32_LED_PARPADEO</a> </p>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Botón</h1>
-                            <p class="fs-6 mb-4">
-                                En este código el pin 23 como salida para controlar un LED y el pin 34 como entrada para leer 
-                                el estado de un botón. En el loop(), se verifica continuamente el estado del botón con 
-                                digitalRead(34). Si el botón está presionado, el LED se enciende; si el botón no está presionado, 
-                                el LED se apaga.
-                            </p>
-                            
-                            <pre>
-                                int led=23;
-                                int button=34;
-                                int buttonState=0;
-                                void setup() {
-                                    // put your setup code here, to run once:
-                                    pinMode(23,OUTPUT);
-                                    pinMode(34,INPUT);
-                                }
-
-                                void loop() {
-                                    buttonState=digitalRead(button);
-
-                                    if(buttonState==1){
-                                        digitalWrite(led,HIGH);
-                                    }
-                                    if (buttonState==0){
-                                        digitalWrite(led,LOW);
-                                    }
-                                }
-                            </pre>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
-                            <iframe
-                                src="https://wokwi.com/projects/423277380037754881"
-                                width="100%"
-                                height="600px"
-                                style="border: none;">
-                            </iframe>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
-                            <center>
-                                <figure class="mb-4" align="center">
-                                    <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_Led_1_Boton.mp4" type="video/mp4">
-                                    </video>
-                                </figure>
-                            </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_LED_1_BOTON.ino">ESP32_LED_1_BOTON</a> </p>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">OR</h1>
-                            <p class="fs-6 mb-4">
-                                En este código el pin 23 como salida para controlar un LED y los pines 34 y 35 como entradas 
-                                para leer el estado de dos botones. En el loop(), se verifica continuamente si alguno de los 
-                                botones está presionado. Si al menos uno de ellos está presionado, el LED se enciende, si 
-                                ninguno está presionado, el LED se apaga.
-                            </p>
-                            
-                            <pre>
-                                int led=23;
-                                int button_1=34;
-                                int button_2=35;
-                                int buttonState_1=0;
-                                int buttonState_2=0;
-                                void setup() {
-                                    // put your setup code here, to run once:
-                                    pinMode(led,OUTPUT);
-                                    pinMode(button_1,INPUT);
-                                    pinMode(button_2,INPUT);
-                                }
-
-                                void loop() {
-                                    buttonState_1=digitalRead(button_1);
-                                    buttonState_2=digitalRead(button_2);
-                                    if((buttonState_1==1) || (buttonState_2==1)){
-                                        digitalWrite(led,HIGH);
-                                    }
-                                    else{
-                                        digitalWrite(led,LOW);
-                                    }
-                                }
-                            </pre>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
-                            <iframe
-                                src="https://wokwi.com/projects/423278186641390593"
-                                width="100%"
-                                height="600px"
-                                style="border: none;">
-                            </iframe>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
-                            <center>
-                                <figure class="mb-4" align="center">
-                                    <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_Led_2_Botones_OR.mp4" type="video/mp4">
-                                    </video>
-                                </figure>
-                            </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_LED_2_BOTONES_OR.ino">ESP32_LED_2_BOTONES_OR</a> </p>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">AND</h1>
-                            <p class="fs-6 mb-4">
-                                En este código el pin 23 como salida para controlar un LED y los pines 34 y 35 como entradas 
-                                para leer el estado de dos botones. En el loop(), se verifica continuamente si ambos botones 
-                                están presionados al mismo tiempo. Si esto ocurre, el LED se enciende si al menos uno de los 
-                                botones no está presionado, el LED se apaga.
-                            </p>
-                            
-                            <pre>
-                                int led=23;
-                                int button_1=34;
-                                int button_2=35;
-                                int buttonState_1=0;
-                                int buttonState_2=0;
-                                void setup() {
-                                    // put your setup code here, to run once:
-                                    pinMode(led,OUTPUT);
-                                    pinMode(button_1,INPUT);
-                                    pinMode(button_2,INPUT);
-                                }
-
-                                void loop() {
-                                    buttonState_1=digitalRead(button_1);
-                                    buttonState_2=digitalRead(button_2);
-                                    if((buttonState_1==1) && (buttonState_2==1)){
-                                        digitalWrite(led,HIGH);
-                                    }
-                                    else{
-                                        digitalWrite(led,LOW);
-                                    }
-                                }
-                            </pre>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
-                            <iframe
-                                src="https://wokwi.com/projects/423279569954719745"
-                                width="100%"
-                                height="600px"
-                                style="border: none;">
-                            </iframe>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
-                            <center>
-                                <figure class="mb-4" align="center">
-                                    <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_Led_2_Botones_AND.mp4" type="video/mp4">
-                                    </video>
-                                </figure>
-                            </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_LED_2_BOTONES_AND.ino">ESP32_LED_2_BOTONES_AND</a> </p>
+                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_DHT.ino">ESP32_DHT</a> </p>
 
                         <p id="conclusiones">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Conclusiones -</h2>
