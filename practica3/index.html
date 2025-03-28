@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Práctica 2 | Ibero Puebla</title>
+        <title>Práctica 3 | Ibero Puebla</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -64,7 +64,7 @@
                     <!-- Post header-->
                     <header class="mb-4">
                         <!-- Post title-->
-                        <h1 class="fw-bolder mb-1">Wifi ESP32 – Sensores Digitales, Analógicos e Inteligentes</h1>
+                        <h1 class="fw-bolder mb-1">Wifi ESP32 – Thingspeak</h1>
 
                         <!-- ETIQUETA DE ALUMNO (Hacer una por cada alumno)-->
                             <div class="ms-2">
@@ -92,7 +92,7 @@
             <section>
                 <div class="container px-5">
 
-                    <figure class="mb-4"><img class="img-fluid rounded" width="800px" src="img/sensores.jpg" alt="..." /></figure>
+                    <figure class="mb-4"><img class="img-fluid rounded" width="800px" src="img/thingspeak.webp" alt="..." /></figure>
                                 
                     <p id="resumen">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5" >- Resumen -</h2>
@@ -216,39 +216,74 @@
                             <p class="fs-6 mb-4">Descargar codigo: <a href="files/esp32_escaneo_wifi.ino">ESP32 Escaneo WiFi</a> </p>
 
 
-                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">Botón
+                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Digital</h2>
                             <p class="fs-6 mb-4">
-                                En este código se configura el pin 23 como salida para controlar un LED, y el pin 34 como 
-                                entrada para leer el estado de un botón. En la función loop(), que se ejecuta en un bucle 
-                                infinito, se lee el estado del botón y, si está presionado, el LED se enciende. Si el botón no 
-                                está presionado, el LED se apaga. Esto permite controlar el encendido del LED de manera 
-                                manual a través del botón.
+                                En la función setup(), se configura la conexión WiFi al comenzar con los parámetros de red, y se 
+                                establece la comunicación serial. Luego, en la función loop(), se lee el estado del botón y, en 
+                                función de su valor, se enciende o apaga el LED. Además, si el ESP32 está conectado a WiFi, se 
+                                construye y envía una solicitud HTTP GET a ThingSpeak para actualizar el valor del botón.
                             </p>
                             
                             <pre>
-                                int led=23;
-                                int button=34;
-                                int buttonState=0;
-                                void setup() {
-                                    // put your setup code here, to run once:
-                                    pinMode(23,OUTPUT);
-                                    pinMode(34,INPUT);
-                                }
-
-                                void loop() {
-                                    buttonState=digitalRead(button);
-                                    if(buttonState==1){
-                                        digitalWrite(led,HIGH);
+                                    #include <WiFi.h>
+                                    #include <HTTPClient.h>
+                                    
+                                    int boton = 4;
+                                    int led = 1;
+                                    
+                                    int status_boton = 0;
+                                    
+                                    String url = "https://api.thingspeak.com/update?";
+                                    String api_key = "NZUJ6QMBRY8VJSTS";
+                                    String sensor = "field1";
+                                    
+                                    void setup() {
+                                      pinMode(led, OUTPUT);
+                                      pinMode(boton, INPUT);
+                                    
+                                      delay(1000);
+                                      Serial.begin(115200);
+                                        
+                                      WiFi.begin("Guty", "123456789");
+                                    
+                                      while ((WiFi.status() != WL_CONNECTED)) {
+                                        delay(500);
+                                        Serial.print(".");
+                                      }   
+                                      Serial.println("WiFi conectado");
                                     }
-                                    if (buttonState==0){
-                                        digitalWrite(led,LOW);
+                                    
+                                    void loop() {
+                                      status_boton = digitalRead(boton);
+                                    
+                                      if (status_boton == 1) {
+                                        digitalWrite(led, HIGH);
+                                      } else {
+                                        digitalWrite(led, LOW);
+                                      }
+                                    
+                                      if ((WiFi.status() == WL_CONNECTED)) {
+                                        HTTPClient http;
+                                    
+                                        String message = url + "api_key=" + api_key + "&" + sensor + "=" + String(status_boton);
+                                        http.begin(message);
+                                    
+                                        int httpCode = http.GET();
+                                        Serial.println(message);
+                                        Serial.print("Código GET: ");
+                                        Serial.println(httpCode);
+                                    
+                                        http.end();
+                                      }
+                                    
+                                      delay(3000);
                                     }
-                                }
+                                    
                             </pre>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
                             <iframe
-                                src="https://wokwi.com/projects/423293029874999297"
+                                src="https://wokwi.com/projects/426710170856835073"
                                 width="100%"
                                 height="600px"
                                 style="border: none;">
@@ -258,11 +293,11 @@
                             <center>
                                 <figure class="mb-4" align="center">
                                     <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_BOTON.mp4" type="video/mp4">
+                                        <source src="video/ESP32_WIFI_BOTON.mp4" type="video/mp4">
                                     </video>
                                 </figure>
                             </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_BOTON.ino">ESP32_BOTON</a> </p>
+                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/esp32_wifi_boton.ino">ESP32 Botón WiFi</a> </p>
 
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Analógico</h1>
