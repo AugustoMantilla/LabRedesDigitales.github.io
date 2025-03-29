@@ -288,7 +288,9 @@
                                 height="600px"
                                 style="border: none;">
                             </iframe>
-                            <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2838541/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+                            <center>
+                                <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2838541/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+                            </center>
 
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
@@ -304,74 +306,91 @@
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Analógico</h1>
                             <p class="fs-6 mb-4">
-                                Los sensores analógicos proporcionan valores de salida continuos que varían en un rango de 
-                                voltaje, dependiendo de la resolución del ADC del microcontrolador. En el caso del ESP32 
-                                tiene un ADC de 12 bits, los valores van de 0 a 4096. Para realizar la lectura de estos 
-                                valores, se utiliza un GPIO con un canal analógico, permitiendo medir la variación de 
-                                voltaje del sensor y obtener datos más precisos.
-                            </p>
-
-                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">Potenciómetro
-                            <p class="fs-6 mb-4">
-                                En este código se configura el pin 23 como salida para controlar un LED, y el pin 34 como 
-                                entrada para leer el valor de un potenciómetro. En la función loop(), que se ejecuta en un 
-                                bucle infinito, se lee el valor analógico del potenciómetro. Si el valor leído es mayor o 
-                                igual a 1024, el LED se enciende, de lo contrario, el LED se apaga.
+                                En setup(), se configura la conexión WiFi, la comunicación serial y el pin del LED como salida. 
+                                En loop(), se lee el valor del potenciómetro y, si es mayor o igual a 1024, el LED se enciende; 
+                                de lo contrario, se apaga. Si hay conexión WiFi, se construye y envía una solicitud HTTP GET para 
+                                actualizar el valor en field2 de ThingSpeak, mostrando en el monitor serial el código de 
+                                respuesta para verificar el éxito de la actualización.
                             </p>
                             
                             <pre>
-                                int led=23;
-                                int pot=34;
-                                
-                                int potValue=0;
-                                
-                                void setup() {
-                                  // put your setup code here, to run once:
-                                  pinMode(23,OUTPUT);
-                                  pinMode(34,INPUT);
-                                }
-                                
-                                void loop() {
-                                  
-                                  potValue=analogRead(pot);
-                                
-                                  if(potValue>=1024){
-                                    digitalWrite(led,HIGH);
-                                  }
-                                  else{
-                                    digitalWrite(led,LOW);
-                                  }
-                                
-                                }                             
+                                    #include <WiFi.h>
+                                    #include <HTTPClient.h>
+                                     
+                                    int led=1;
+                                     
+                                    int pot=4;
+                                    int potValue=0;
+                                     
+                                    String url="https://api.thingspeak.com/update?";
+                                    String api_key="NZUJ6QMBRY8VJSTS";
+                                    String sensor="field2";
+                                     
+                                    void setup() {
+                                      // put your setup code here, to run once:
+                                      pinMode(1,OUTPUT);
+                                      delay(1000);
+                                      Serial.begin(115200);
+                                      WiFi.begin("Guty", "123456789");
+                                     
+                                      while((WiFi.status() != WL_CONNECTED)){
+                                        delay(500);
+                                        Serial.print(".");
+                                      }
+                                      Serial.println("WiFi Connected");
+                                     
+                                    }
+                                     
+                                    void loop() {
+                                     
+                                      potValue=analogRead(pot);
+                                     
+                                      if(potValue>=1024){
+                                        digitalWrite(led,HIGH);
+                                      }
+                                      else{
+                                        digitalWrite(led,LOW);
+                                      }
+                                      if((WiFi.status()== WL_CONNECTED)){
+                                     
+                                        HTTPClient http;
+                                        String message=url+"api_key="+api_key+"&"+sensor+"="+String(potValue);
+                                        http.begin(message);
+                                     
+                                        int httpCode = http.GET();
+                                        Serial.println(message);
+                                        Serial.print("GET code:");
+                                        Serial.println(httpCode);
+                                        http.end();
+                                      }
+                                      delay(1000);
+                                     
+                                    }                             
                             </pre>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
                             <iframe
-                                src="https://wokwi.com/projects/423297372636341249"
+                                src="https://wokwi.com/projects/426720826051633153"
                                 width="100%"
                                 height="600px"
                                 style="border: none;">
                             </iframe>
 
+                            <center>
+                                <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2838541/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+                            </center>
+
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
                             <center>
                                 <figure class="mb-4" align="center">
                                     <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_POTENCIOMETRO.mp4" type="video/mp4">
+                                        <source src="video/esp32_wifi_pot.mp4" type="video/mp4">
                                     </video>
                                 </figure>
                             </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_POTENCIOMETRO.ino">ESP32_POTENCIOMETRO</a> </p>
+                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/Esp32_Wifi_potenciometro.ino">ESP32 Wifi Potenciometro</a> </p>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Inteligente</h1>
-                            <p class="fs-6 mb-4">
-                                Los sensores inteligentes son dispositivos que van más allá de las simples lecturas digitales o 
-                                analógicas, ya que su funcionamiento o complejidad requiere el uso de protocolos de 
-                                comunicación, puertos específicos del microcontrolador o medición de tiempos. Estos sensores 
-                                suelen ser más sofisticados.
-                            </p>
-
-                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">DHT22
                             <p class="fs-6 mb-4">
                                 En este código se configura el pin 23 como salida para controlar un LED y se utiliza el sensor 
                                 DHT22 conectado al pin 33 para medir la temperatura y la humedad. En la función loop(), que se 
