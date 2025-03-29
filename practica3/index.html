@@ -453,74 +453,108 @@
 
                             <h2 class="fw-bolder2 mb-4 mt-5 fs-5">PIR
                             <p class="fs-6 mb-4">
-                                En este código se configura el pin 23 como salida para controlar un LED y el pin 33 como entrada 
-                                para leer el estado de un sensor PIR. En la función loop(), que se ejecuta de manera continua, 
-                                se lee el estado del sensor PIR. Si se detecta movimiento, el LED se enciende y, si el 
-                                movimiento se detiene, el LED se apaga. 
+                                En la función setup(), se configura el pin del LED como salida y el pin del sensor PIR como 
+                                entrada, se establece la conexión WiFi. En la función loop(), se lee el estado del sensor PIR, 
+                                y si se detecta movimiento, el LED se enciende. Si no hay movimiento, el LED se apaga y se 
+                                notifica el fin del movimiento. Si el ESP32 está conectado a WiFi, se construye y envía una 
+                                solicitud HTTP GET a ThingSpeak para actualizar el valor del sensor en field4.
                             </p>
                             
                             <pre>
-                                #define led 23               
-                                #define PIR 33             
-                                
-                                //Variables globales
-                                int pirState = LOW;           
-                                int val = 0;                
-                                
-                                void setup() {
-                                    pinMode(led, OUTPUT);   
-                                    pinMode(PIR, INPUT);   
-                                    Serial.begin(115200);
-                                }
-                                
-                                void loop() {
-                                    val = digitalRead(PIR);  
-                                    if (val == HIGH) {            
-                                        digitalWrite(led, HIGH); 
-                                        if (pirState == LOW) {
-                                            Serial.println("Motion detected!");
-                                            pirState = HIGH;
-                                        }
-                                    } else {
-                                        digitalWrite(led, LOW); 
-                                        if (pirState == HIGH) {
-                                            Serial.println("Motion ended!");
-                                            pirState = LOW;
-                                        }
+                                    #include <WiFi.h>
+                                    #include <HTTPClient.h>
+                                    
+                                    int led = 1;
+                                    int PIR = 4;
+                                    
+                                    int pirState = LOW;
+                                    int val = 0;
+                                    
+                                    String url = "https://api.thingspeak.com/update?";
+                                    String api_key = "NZUJ6QMBRY8VJSTS";
+                                    String sensor = "field4";
+                                    
+                                    void setup() {
+                                      pinMode(led, OUTPUT);
+                                      pinMode(PIR, INPUT);
+                                    
+                                      delay(1000);
+                                      Serial.begin(115200);
+                                        
+                                      WiFi.begin("Guty", "123456789");
+                                    
+                                      while ((WiFi.status() != WL_CONNECTED)) {
+                                        delay(500);
+                                        Serial.print(".");
+                                      }   
+                                      Serial.println("WiFi conectado");
                                     }
-                                }                
+                                    
+                                    void loop() {
+                                      delay(1000);
+                                    
+                                      val = digitalRead(PIR);
+                                    
+                                      if (val == HIGH) {
+                                            digitalWrite(led, HIGH);
+                                            if (pirState == LOW) {
+                                                Serial.println("¡Movimiento detectado!");
+                                                pirState = HIGH;
+                                            }
+                                        } else {
+                                            digitalWrite(led, LOW);
+                                            if (pirState == HIGH) {
+                                                Serial.println("¡Movimiento finalizado!");
+                                                pirState = LOW;
+                                            }
+                                        }
+                                    
+                                      if ((WiFi.status() == WL_CONNECTED)) {
+                                        HTTPClient http;
+                                    
+                                        String message = url + "api_key=" + api_key + "&" + sensor + "=" + String(pirState);
+                                        http.begin(message);
+                                    
+                                        int httpCode = http.GET();
+                                        Serial.println(message);
+                                        Serial.print("Código GET: ");
+                                        Serial.println(httpCode);
+                                    
+                                        http.end();
+                                      }
+                                    
+                                      delay(1000);
+                                    }                                                    
                             </pre>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
                             <iframe
-                                src="https://wokwi.com/projects/423299778674216961"
+                                src="https://wokwi.com/projects/426730633394087937"
                                 width="100%"
                                 height="600px"
                                 style="border: none;">
                             </iframe>
+                            <center>
+                                <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2838541/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+                            </center>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
                             <center>
                                 <figure class="mb-4" align="center">
                                     <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_PIR.mp4" type="video/mp4">
+                                        <source src="video/esp32_wifi_pir.mp4" type="video/mp4">
                                     </video>
                                 </figure>
                             </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_PIR.ino">ESP32_PIR</a> </p>
+                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/esp32_wifi_pir.ino">ESP32 WiFi PIR</a> </p>
 
                         <p id="conclusiones">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Conclusiones -</h2>
                         <p class="fs-6 mb-4">
-                            A lo largo de la práctica se exploraron y comprendieron los principios de funcionamiento de los 3
-                            diferentes tipos de sensores: digitales, analógicos e inteligentes, utilizando el ESP32. Se 
-                            configuraron los pines de entrada y salida de manera adecuada, tanto para leer las señales de los 
-                            sensores como para controlar el LED que había conectado. 
-                        </p>
-
-                        <p class="fs-6 mb-4">
-                            Además, se utilizó la comunicación serial para mostrar los datos capturados por los sensores, lo 
-                            que proporcionó una retroalimentación importante sobre el comportamiento del sistema.
+                            En conclusión, esta práctica permitió explorar la integración del ESP32 con la plataforma ThingSpeak 
+                            para la transmisión y monitoreo de datos en tiempo real. Se configuraron diferentes tipos de 
+                            sensores, tanto digitales, analógicos, inteligentes y un PIR y se estableció la conexión WiFi para 
+                            enviar la información a la nube, donde se visualizó y analizó.
                         </p>
 
                         <p id="referencias">
