@@ -392,49 +392,80 @@
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Inteligente</h1>
                             <p class="fs-6 mb-4">
-                                En este código se configura el pin 23 como salida para controlar un LED y se utiliza el sensor 
-                                DHT22 conectado al pin 33 para medir la temperatura y la humedad. En la función loop(), que se 
-                                ejecuta continuamente, el sensor lee la temperatura y la humedad cada segundo. Estos valores 
-                                se envían al monitor seria. Si la humedad medida es mayor o igual al 50%, el LED se enciende, 
-                                y si la humedad es menor a ese valor, el LED se apaga.
+                                Este código utiliza un sensor DHT22 para medir la temperatura y la humedad, y envía los datos a 
+                                ThingSpeak a través de una conexión WiFi en un ESP32. En la función setup(), se inicializa el 
+                                sensor, se configura un LED en el pin 4 como salida y se establece la conexión WiFi. En loop(), 
+                                se leen los valores de temperatura y humedad. Si la humedad supera el 50%, el LED se enciende; de 
+                                lo contrario, se apaga. Si el ESP32 está conectado a WiFi, los datos de humedad se envían a 
+                                ThingSpeak.
                             </p>
                             
                             <pre>
-                                int led=23;
-                                int temperatura=0;
-                                int humedad=0;
-                                #include <DHT.h>
-                                DHT dht(33,DHT22);
-
-                                void setup() {
-                                    // put your setup code here, to run once:
-                                    pinMode(23,OUTPUT);
-                                    dht.begin();
-                                    Serial.begin(115200);
-                                }
-
-                                void loop() {
-                                delay(1000);
-                                temperatura=dht.readTemperature();
-                                humedad=dht.readHumidity();
-
-                                Serial.print("Temperatura:");
-                                Serial.println(temperatura);
-                                Serial.print("Humedad:");
-                                Serial.println(humedad);
-
-                                if(humedad>=50){
-                                    digitalWrite(led,HIGH);
-                                }
-                                else{
-                                    digitalWrite(led,LOW);
-                                }
-                            }                 
+                                    #include <DHT.h>
+                                    #include <WiFi.h>
+                                    #include <HTTPClient.h>
+                                    
+                                    int led = 4;
+                                    DHT dht(5, DHT22);
+                                    
+                                    int valor_temperatura = 0;
+                                    int valor_humedad = 0;
+                                    
+                                    String url = "https://api.thingspeak.com/update?";
+                                    String api_key = "NZUJ6QMBRY8VJSTS";
+                                    String sensor = "field5";
+                                    
+                                    void setup() {
+                                      pinMode(led, OUTPUT);
+                                      dht.begin();
+                                      
+                                      delay(1000);
+                                      Serial.begin(115200);
+                                        
+                                      WiFi.begin("Guty", "123456789");
+                                    
+                                      while ((WiFi.status() != WL_CONNECTED)) {
+                                        delay(500);
+                                        Serial.print(".");
+                                      }   
+                                      Serial.println("WiFi conectado");
+                                    }
+                                    
+                                    void loop() {
+                                      delay(1000);
+                                    
+                                      valor_temperatura = dht.readTemperature();
+                                      valor_humedad = dht.readHumidity();
+                                    
+                                      Serial.print("Temperatura: ");
+                                      Serial.println(valor_temperatura);
+                                      Serial.print("Humedad: ");
+                                      Serial.println(valor_humedad);
+                                    
+                                      if (valor_humedad >= 50) { 
+                                        digitalWrite(led, HIGH);
+                                      } else {
+                                        digitalWrite(led, LOW);
+                                      }
+                                    
+                                      if ((WiFi.status() == WL_CONNECTED)) {
+                                        HTTPClient http;
+                                        String message = url + "api_key=" + api_key + "&" + sensor + "=" + String(valor_humedad);
+                                        http.begin(message);
+                                        int httpCode = http.GET();
+                                        Serial.println(message);
+                                        Serial.print("Código GET: ");
+                                        Serial.println(httpCode);
+                                        http.end();
+                                      }
+                                    
+                                      delay(1000);
+                                    }        
                             </pre>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
                             <iframe
-                                src="https://wokwi.com/projects/423298701672146945"
+                                src="https://wokwi.com/projects/426997881390801921"
                                 width="100%"
                                 height="600px"
                                 style="border: none;">
@@ -444,11 +475,11 @@
                             <center>
                                 <figure class="mb-4" align="center">
                                     <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_DHT.mp4" type="video/mp4">
+                                        <source src="video/esp32_wifi_dht.mp4" type="video/mp4">
                                     </video>
                                 </figure>
                             </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/ESP32_DHT.ino">ESP32_DHT</a> </p>
+                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/esp32_wifi_dht.ino">ESP32 WiFi DHT</a> </p>
 
 
                             <h2 class="fw-bolder2 mb-4 mt-5 fs-5">PIR
@@ -564,7 +595,7 @@
                         <p id="descargables">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Descargables -</h2>
                         <p class="fs-6 mb-4">Descargar datasheet ESP32 en documento PDF: <a href="files/esp32-wroom-32_datasheet_en.pdf">ESP32 Datasheet</a> </p>
-                        <p class="fs-6 mb-4">Descargar carpeta con todos los codigos: <a href="files/Códigos.zip">CODIGOS</a> </p>
+                        <p class="fs-6 mb-4">Descargar carpeta con todos los codigos: <a href="files/Codigos.zip">CODIGOS</a> </p>
 
                 </div>
             </section>
