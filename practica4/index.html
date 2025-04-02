@@ -97,13 +97,11 @@
                     <p id="resumen">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5" >- Resumen -</h2>
                         <p class="fs-6 mb-4">
-                            En esta práctica, se implementa la plataforma ThingSpeak para la recopilación y monitoreo de datos 
-                            en la nube, utilizando un módulo ESP32-C6. Se configura la conectividad WiFi para la transmisión de 
-                            datos en tiempo real y se integran sensores digitales, analógicos e inteligentes. Además, se 
-                            incorpora un sensor PIR para la detección de movimiento, permitiendo su visualización en un tablero 
-                            público en ThingSpeak. Se emplea Arduino IDE para la programación y pruebas iniciales, y se realizan 
-                            simulaciones en Wokwi antes del montaje en hardware, garantizando su correcto funcionamiento. 
-                            Esta práctica refuerza conocimientos en IoT, redes inalámbricas y procesamiento de datos en la nube.
+                            En esta práctica, se integran múltiples sensores con un ESP32 para recopilar y visualizar datos en 
+                            tiempo real. Se utilizan un sensor digital, un sensor analógico y un sensor inteligente, cuyos 
+                            valores son procesados y enviados a una plataforma web. A través de un panel interactivo, los 
+                            usuarios pueden monitorear las variaciones de los sensores en tiempo real, aprovechando las 
+                            capacidades de conectividad del ESP32 para la transmisión de datos de manera eficiente.
                         </p>
                                                                     
                         <p id="intro">
@@ -111,15 +109,16 @@
                         
                         <h2 class="fw-bolder mb-4 mt-5 fs-5" >- Introducción -</h2>
                         <p class="fs-6 mb-4">
-                            La interconectividad entre sensores y plataformas IoT es clave para la automatización y supervisión 
-                            remota de sistemas electrónicos. ThingSpeak es una plataforma en la nube que permite visualizar y 
-                            analizar datos en tiempo real, facilitando su integración con microcontroladores como el ESP32-C6.
+                            El monitoreo en tiempo real de variables a través de sensores es una parte fundamental en el 
+                            desarrollo de aplicaciones IoT. Gracias a microcontroladores como el ESP32, que cuenta con 
+                            conectividad WiFi y múltiples pines de entrada/salida, es posible recopilar, procesar y transmitir 
+                            datos de diferentes sensores a una plataforma web para su visualización y análisis.
                         </p>
                         <p class="fs-6 mb-4">
-                            En esta práctica, se configura la conexión del ESP32-C6 a redes WiFi, permitiendo la transmisión de 
-                            datos de sensores digitales, analógicos e inteligentes a un tablero público en ThingSpeak para su 
-                            monitoreo a distancia. Además, se realizan pruebas en Wokwi antes de la implementación física para 
-                            asegurar un correcto funcionamiento.
+                            En esta práctica, se integran sensores digitales, analógicos e inteligentes con un ESP32 para 
+                            capturar información en tiempo real y enviarla a un servidor web. A través de un panel 
+                            interactivo, los datos pueden ser monitoreados de manera remota, permitiendo un análisis eficiente 
+                            sin depender de plataformas externas.
                         </p>
                         
                         <p id="materiales">
@@ -130,462 +129,154 @@
                                 <li><b>LEDs: </b>1</li>
                                 <li><b>Resistencia 220Ω: </b>1</li>
                                 <li><b>Botones: </b>1</li>
-                                <li><b>Resistencias 1KΩ:</b>2</li>
+                                <li><b>Resistencias 1KΩ:</b>1</li>
                                 <li><b>Potenciómetro: </b>1</li>
                                 <li><b>DHT22: </b>1</li>
                                 <li><b>PIR: </b>1</li>
                                 <li><b>Protoboard: </b>1</li>
-                                <li><b>Cables: </b>16</li>
+                                <li><b>Cables: </b>28</li>
                             </ul>
                         </p>
                         <p id="desarrollo">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Desarrollo -</h2>
                         <p class="fs-6 mb-4">
-                            En esta sección, se detallará el proceso completo para la simulación y construcción del circuito 
-                            utilizando sensores digitales, analógicos e inteligentes con el ESP32-C6. Se explicará cada etapa, 
-                            desde la configuración del entorno de desarrollo en Wokwi o Arduino IDE, hasta la implementación del 
-                            código y la conexión de los sensores. Además, se abordará la integración con la plataforma ThingSpeak 
-                            para la transmisión y monitoreo de datos en la nube.
+                            Después de haber realizado los ejercicios presentados en las diapositivas proporcionadas por el 
+                            profesor, podemos comenzar a desarrollar nuestra propia página para crear un panel interactivo. 
+                            Este panel funciona de la siguiente manera: si el botón está presionado, el LED se enciende y en el 
+                            panel aparecerá un botón de color verde; de lo contrario, estará en rojo. Para el potenciómetro, se 
+                            leerá su valor en tiempo real. En el caso del sensor PIR, se mostrará un ícono de alto cuando no 
+                            detecte movimiento y un letrero de una persona caminando cuando lo detecte. Finalmente, el sensor 
+                            DHT22 permitirá visualizar en tiempo real una tabla con la variación de la temperatura.
                         </p>
-                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">Escaneo WiFi</h2>
-                            <p class="fs-6 mb-4">
-                                En la función setup(), se inicia la comunicación serial a 115200 baudios y se configura el 
-                                ESP32 en modo estación (WIFI_STA). En la función loop(), el ESP32 escanea las redes WiFi 
-                                cercanas usando WiFi.scanNetworks(), y muestra en el monitor serial la cantidad de redes 
-                                encontradas junto con su SSID (nombre), la intensidad de la señal (RSSI) y si la red está 
-                                protegida o es abierta. Luego, espera 5 segundos antes de realizar un nuevo escaneo.
-                            </p>
-
-                            <pre>
-                                #include "WiFi.h"
-
-                                void setup() {
-                                Serial.begin(115200);
-                                Serial.println("Inicializando WiFi...");
-                                
-                                WiFi.mode(WIFI_STA);
-                                Serial.println("Configuración terminada!");
-                                }
-
-                                void loop() {
-                                Serial.println("Escaneando...");
-                                
-                                int n = WiFi.scanNetworks();
-                                Serial.println("Escaneo terminado!");
-                                
-                                if (n == 0) {
-                                    Serial.println("No se encontraron redes.");
-                                } else {
-                                    Serial.println();
-                                    Serial.print(n);
-                                    Serial.println(" redes encontradas");
-                                    
-                                    for (int i = 0; i < n; ++i) {
-                                    Serial.print(i + 1);
-                                    Serial.print(": ");
-                                    Serial.print(WiFi.SSID(i));
-                                    Serial.print(" (");
-                                    Serial.print(WiFi.RSSI(i));
-                                    Serial.print(")");
-                                    Serial.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN) ? " " : "*");
-                                    
-                                    delay(10);
-                                    }
-                                }
-                                Serial.println("");
-                                delay(5000);
-                                }
-                            </pre>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
-                            <iframe
-                                src="https://wokwi.com/projects/426706745269998593"
-                                width="100%"
-                                height="600px"
-                                style="border: none;">
-                            </iframe>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
-                            <center>
-                                <figure class="mb-4" align="center">
-                                    <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_ESCANEO_WIFI.mp4" type="video/mp4">
-                                    </video>
-                                </figure>
-                            </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/esp32_escaneo_wifi.ino">ESP32 Escaneo WiFi</a> </p>
-
-
-                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Digital</h2>
-                            <p class="fs-6 mb-4">
-                                En la función setup(), se configura la conexión WiFi al comenzar con los parámetros de red, y se 
-                                establece la comunicación serial. Luego, en la función loop(), se lee el estado del botón y, en 
-                                función de su valor, se enciende o apaga el LED. Además, si el ESP32 está conectado a WiFi, se 
-                                construye y envía una solicitud HTTP GET a ThingSpeak para actualizar el valor del botón.
-                            </p>
-                            
                             <pre>
                                     #include <WiFi.h>
                                     #include <HTTPClient.h>
-                                    
-                                    int boton = 4;
-                                    int led = 1;
-                                    
-                                    int status_boton = 0;
-                                    
-                                    String url = "https://api.thingspeak.com/update?";
-                                    String api_key = "NZUJ6QMBRY8VJSTS";
-                                    String sensor = "field1";
-                                    
-                                    void setup() {
-                                      pinMode(led, OUTPUT);
-                                      pinMode(boton, INPUT);
-                                    
-                                      delay(1000);
-                                      Serial.begin(115200);
-                                        
-                                      WiFi.begin("Guty", "123456789");
-                                    
-                                      while ((WiFi.status() != WL_CONNECTED)) {
-                                        delay(500);
-                                        Serial.print(".");
-                                      }   
-                                      Serial.println("WiFi conectado");
-                                    }
-                                    
-                                    void loop() {
-                                      status_boton = digitalRead(boton);
-                                    
-                                      if (status_boton == 1) {
-                                        digitalWrite(led, HIGH);
-                                      } else {
-                                        digitalWrite(led, LOW);
-                                      }
-                                    
-                                      if ((WiFi.status() == WL_CONNECTED)) {
-                                        HTTPClient http;
-                                    
-                                        String message = url + "api_key=" + api_key + "&" + sensor + "=" + String(status_boton);
-                                        http.begin(message);
-                                    
-                                        int httpCode = http.GET();
-                                        Serial.println(message);
-                                        Serial.print("Código GET: ");
-                                        Serial.println(httpCode);
-                                    
-                                        http.end();
-                                      }
-                                    
-                                      delay(3000);
-                                    }
-                                    
-                            </pre>
-                            
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
-                            <iframe
-                                src="https://wokwi.com/projects/426710170856835073"
-                                width="100%"
-                                height="600px"
-                                style="border: none;">
-                            </iframe>
-                            <center>
-                                <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2838541/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
-                            </center>
-
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
-                            <center>
-                                <figure class="mb-4" align="center">
-                                    <video width="55%" height="300" controls>
-                                        <source src="video/ESP32_WIFI_BOTON.mp4" type="video/mp4">
-                                    </video>
-                                </figure>
-                            </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/esp32_wifi_boton.ino">ESP32 Botón WiFi</a> </p>
-
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Analógico</h1>
-                            <p class="fs-6 mb-4">
-                                En setup(), se configura la conexión WiFi, la comunicación serial y el pin del LED como salida. 
-                                En loop(), se lee el valor del potenciómetro y, si es mayor o igual a 1024, el LED se enciende; 
-                                de lo contrario, se apaga. Si hay conexión WiFi, se construye y envía una solicitud HTTP GET para 
-                                actualizar el valor en field2 de ThingSpeak, mostrando en el monitor serial el código de 
-                                respuesta para verificar el éxito de la actualización.
-                            </p>
-                            
-                            <pre>
-                                    #include <WiFi.h>
-                                    #include <HTTPClient.h>
-                                     
-                                    int led=1;
-                                     
-                                    int pot=4;
-                                    int potValue=0;
-                                     
-                                    String url="https://api.thingspeak.com/update?";
-                                    String api_key="NZUJ6QMBRY8VJSTS";
-                                    String sensor="field2";
-                                     
-                                    void setup() {
-                                      // put your setup code here, to run once:
-                                      pinMode(1,OUTPUT);
-                                      delay(1000);
-                                      Serial.begin(115200);
-                                      WiFi.begin("Guty", "123456789");
-                                     
-                                      while((WiFi.status() != WL_CONNECTED)){
-                                        delay(500);
-                                        Serial.print(".");
-                                      }
-                                      Serial.println("WiFi Connected");
-                                     
-                                    }
-                                     
-                                    void loop() {
-                                     
-                                      potValue=analogRead(pot);
-                                     
-                                      if(potValue>=1024){
-                                        digitalWrite(led,HIGH);
-                                      }
-                                      else{
-                                        digitalWrite(led,LOW);
-                                      }
-                                      if((WiFi.status()== WL_CONNECTED)){
-                                     
-                                        HTTPClient http;
-                                        String message=url+"api_key="+api_key+"&"+sensor+"="+String(potValue);
-                                        http.begin(message);
-                                     
-                                        int httpCode = http.GET();
-                                        Serial.println(message);
-                                        Serial.print("GET code:");
-                                        Serial.println(httpCode);
-                                        http.end();
-                                      }
-                                      delay(1000);
-                                     
-                                    }                             
-                            </pre>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
-                            <iframe
-                                src="https://wokwi.com/projects/426720826051633153"
-                                width="100%"
-                                height="600px"
-                                style="border: none;">
-                            </iframe>
-
-                            <center>
-                                <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2838541/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
-                            </center>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
-                            <center>
-                                <figure class="mb-4" align="center">
-                                    <video width="55%" height="300" controls>
-                                        <source src="video/esp32_wifi_pot.mp4" type="video/mp4">
-                                    </video>
-                                </figure>
-                            </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/Esp32_Wifi_potenciometro.ino">ESP32 Wifi Potenciometro</a> </p>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5">Sensor Inteligente</h1>
-                            <p class="fs-6 mb-4">
-                                Este código utiliza un sensor DHT22 para medir la temperatura y la humedad, y envía los datos a 
-                                ThingSpeak a través de una conexión WiFi en un ESP32. En la función setup(), se inicializa el 
-                                sensor, se configura un LED en el pin 4 como salida y se establece la conexión WiFi. En loop(), 
-                                se leen los valores de temperatura y humedad. Si la humedad supera el 50%, el LED se enciende; de 
-                                lo contrario, se apaga. Si el ESP32 está conectado a WiFi, los datos de humedad se envían a 
-                                ThingSpeak.
-                            </p>
-                            
-                            <pre>
                                     #include <DHT.h>
-                                    #include <WiFi.h>
-                                    #include <HTTPClient.h>
                                     
-                                    int led = 4;
-                                    DHT dht(5, DHT22);
+                                    // Puertos GPIO
+                                    int boton = 4;
+                                    int led = 5;
+                                    int potenciometro = 6; // GPIO para el potenciómetro
+                                    int pir = 7; // GPIO para el sensor PIR
+                                    DHT dht(0, DHT22);
                                     
+                                    // Variables status
+                                    int status_boton = 0;
+                                    int valor_potenciometro = 0;
+                                    int status_pir = 0;
                                     int valor_temperatura = 0;
-                                    int valor_humedad = 0;
                                     
+                                    // PHP server
                                     String url = "https://api.thingspeak.com/update?";
                                     String api_key = "NZUJ6QMBRY8VJSTS";
-                                    String sensor = "field5";
+                                    String sensordht = "field5";
+                                    String url_boton = "https://58632bcd-835e-42f9-9ecc-644a33682562-00-1229jg7ktjbyb.janeway.replit.dev/sensor1/?";
+                                    String url_potenciometro = "https://58632bcd-835e-42f9-9ecc-644a33682562-00-1229jg7ktjbyb.janeway.replit.dev/sensor2/?";
+                                    String url_pir = "https://58632bcd-835e-42f9-9ecc-644a33682562-00-1229jg7ktjbyb.janeway.replit.dev/sensor3/?";
+                                    String sensor = "DATO";
                                     
                                     void setup() {
-                                      pinMode(led, OUTPUT);
-                                      dht.begin();
-                                      
-                                      delay(1000);
-                                      Serial.begin(115200);
-                                        
-                                      WiFi.begin("Guty", "123456789");
+                                        // Configuración de pines
+                                        pinMode(boton, INPUT);
+                                        pinMode(led, OUTPUT);
+                                        pinMode(potenciometro, INPUT);
+                                        pinMode(pir, INPUT);
+                                        dht.begin();
                                     
-                                      while ((WiFi.status() != WL_CONNECTED)) {
-                                        delay(500);
-                                        Serial.print(".");
-                                      }   
-                                      Serial.println("WiFi conectado");
+                                        delay(1000);
+                                        Serial.begin(115200);
+                                        
+                                        WiFi.begin("Guty", "123456789"); // WiFi_Network, WiFi_Password
+                                    
+                                        // Wait until connection
+                                        while (WiFi.status() != WL_CONNECTED) {
+                                            delay(500);
+                                            Serial.print(".");
+                                        }
+                                        Serial.println("WiFi connected");
                                     }
                                     
-                                    void loop() {
-                                      delay(1000);
+                                    void loop(){
+                                        status_boton = digitalRead(boton);
+                                        valor_potenciometro = analogRead(potenciometro); // Leer el valor del potenciómetro
+                                        status_pir = digitalRead(pir); // Leer el estado del sensor PIR
+                                        valor_temperatura = dht.readTemperature();
                                     
-                                      valor_temperatura = dht.readTemperature();
-                                      valor_humedad = dht.readHumidity();
-                                    
-                                      Serial.print("Temperatura: ");
-                                      Serial.println(valor_temperatura);
-                                      Serial.print("Humedad: ");
-                                      Serial.println(valor_humedad);
-                                    
-                                      if (valor_humedad >= 50) { 
-                                        digitalWrite(led, HIGH);
-                                      } else {
-                                        digitalWrite(led, LOW);
-                                      }
-                                    
-                                      if ((WiFi.status() == WL_CONNECTED)) {
-                                        HTTPClient http;
-                                        String message = url + "api_key=" + api_key + "&" + sensor + "=" + String(valor_humedad);
-                                        http.begin(message);
-                                        int httpCode = http.GET();
-                                        Serial.println(message);
-                                        Serial.print("Código GET: ");
-                                        Serial.println(httpCode);
-                                        http.end();
-                                      }
-                                    
-                                      delay(1000);
-                                    }        
-                            </pre>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
-                            <iframe
-                                src="https://wokwi.com/projects/426997881390801921"
-                                width="100%"
-                                height="600px"
-                                style="border: none;">
-                            </iframe>
-
-                            <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
-                            <center>
-                                <figure class="mb-4" align="center">
-                                    <video width="55%" height="300" controls>
-                                        <source src="video/esp32_wifi_dht.mp4" type="video/mp4">
-                                    </video>
-                                </figure>
-                            </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/esp32_wifi_dht.ino">ESP32 WiFi DHT</a> </p>
-
-
-                            <h2 class="fw-bolder2 mb-4 mt-5 fs-5">PIR
-                            <p class="fs-6 mb-4">
-                                En la función setup(), se configura el pin del LED como salida y el pin del sensor PIR como 
-                                entrada, se establece la conexión WiFi. En la función loop(), se lee el estado del sensor PIR, 
-                                y si se detecta movimiento, el LED se enciende. Si no hay movimiento, el LED se apaga y se 
-                                notifica el fin del movimiento. Si el ESP32 está conectado a WiFi, se construye y envía una 
-                                solicitud HTTP GET a ThingSpeak para actualizar el valor del sensor en field4.
-                            </p>
-                            
-                            <pre>
-                                    #include <WiFi.h>
-                                    #include <HTTPClient.h>
-                                    
-                                    int led = 1;
-                                    int PIR = 4;
-                                    
-                                    int pirState = LOW;
-                                    int val = 0;
-                                    
-                                    String url = "https://api.thingspeak.com/update?";
-                                    String api_key = "NZUJ6QMBRY8VJSTS";
-                                    String sensor = "field4";
-                                    
-                                    void setup() {
-                                      pinMode(led, OUTPUT);
-                                      pinMode(PIR, INPUT);
-                                    
-                                      delay(1000);
-                                      Serial.begin(115200);
-                                        
-                                      WiFi.begin("Guty", "123456789");
-                                    
-                                      while ((WiFi.status() != WL_CONNECTED)) {
-                                        delay(500);
-                                        Serial.print(".");
-                                      }   
-                                      Serial.println("WiFi conectado");
-                                    }
-                                    
-                                    void loop() {
-                                      delay(1000);
-                                    
-                                      val = digitalRead(PIR);
-                                    
-                                      if (val == HIGH) {
+                                        if(status_boton == 1){
                                             digitalWrite(led, HIGH);
-                                            if (pirState == LOW) {
-                                                Serial.println("¡Movimiento detectado!");
-                                                pirState = HIGH;
-                                            }
                                         } else {
                                             digitalWrite(led, LOW);
-                                            if (pirState == HIGH) {
-                                                Serial.println("¡Movimiento finalizado!");
-                                                pirState = LOW;
-                                            }
                                         }
                                     
-                                      if ((WiFi.status() == WL_CONNECTED)) {
-                                        HTTPClient http;
+                                        // Wait for WiFi connection
+                                        if(WiFi.status() == WL_CONNECTED) {
+                                            HTTPClient http;
+                                            
+                                            // Enviar estado del botón
+                                            String message_boton = url_boton + sensor + "=" + String(status_boton);
+                                            http.begin(message_boton);
+                                            int httpCode_boton = http.GET();
+                                            Serial.println(message_boton);
+                                            Serial.print("GET code (boton): ");
+                                            Serial.println(httpCode_boton);
+                                            http.end();
+                                            
+                                            // Enviar valor del potenciómetro
+                                            String message_potenciometro = url_potenciometro + sensor + "=" + String(valor_potenciometro);
+                                            http.begin(message_potenciometro);
+                                            int httpCode_potenciometro = http.GET();
+                                            Serial.println(message_potenciometro);
+                                            Serial.print("GET code (potenciómetro): ");
+                                            Serial.println(httpCode_potenciometro);
+                                            http.end();
+                                            
+                                            // Enviar estado del sensor PIR
+                                            String message_pir = url_pir + sensor + "=" + String(status_pir);
+                                            http.begin(message_pir);
+                                            int httpCode_pir = http.GET();
+                                            Serial.println(message_pir);
+                                            Serial.print("GET code (PIR): ");
+                                            Serial.println(httpCode_pir);
+                                            http.end();
                                     
-                                        String message = url + "api_key=" + api_key + "&" + sensor + "=" + String(pirState);
-                                        http.begin(message);
-                                    
-                                        int httpCode = http.GET();
-                                        Serial.println(message);
-                                        Serial.print("Código GET: ");
-                                        Serial.println(httpCode);
-                                    
-                                        http.end();
-                                      }
-                                    
-                                      delay(1000);
-                                    }                                                    
+                                            String message = url + "api_key=" + api_key + "&" + sensordht + "=" + String(valor_temperatura);
+                                            http.begin(message);
+                                            int httpCode = http.GET();
+                                            Serial.println(message);
+                                            Serial.print("Código GET: ");
+                                            Serial.println(httpCode);
+                                            http.end();
+                                        }
+                                        
+                                        delay(3000);
+                                    }             
                             </pre>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Simulación</b></h1>
                             <iframe
-                                src="https://wokwi.com/projects/426730633394087937"
+                                src="https://wokwi.com/projects/427098690537330689"
                                 width="100%"
                                 height="600px"
                                 style="border: none;">
                             </iframe>
-                            <center>
-                                <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2838541/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
-                            </center>
 
                             <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Video</b></h1>
                             <center>
                                 <figure class="mb-4" align="center">
                                     <video width="55%" height="300" controls>
-                                        <source src="video/esp32_wifi_pir.mp4" type="video/mp4">
+                                        <source src="video/muchos sensores.mp4" type="video/mp4">
                                     </video>
                                 </figure>
                             </center>
-                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/esp32_wifi_pir.ino">ESP32 WiFi PIR</a> </p>
+                            <p class="fs-6 mb-4">Descargar codigo: <a href="files/muchos_sensores.ino">ESP32 con panel</a> </p>
 
                         <p id="conclusiones">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Conclusiones -</h2>
                         <p class="fs-6 mb-4">
-                            En conclusión, esta práctica permitió explorar la integración del ESP32 con la plataforma ThingSpeak 
-                            para la transmisión y monitoreo de datos en tiempo real. Se configuraron diferentes tipos de 
-                            sensores, tanto digitales, analógicos, inteligentes y un PIR y se estableció la conexión WiFi para 
-                            enviar la información a la nube, donde se visualizó y analizó.
+                            Esta práctica resalta la capacidad del ESP32 para gestionar y transmitir datos de múltiples sensores 
+                            de manera eficiente. La integración de sensores digitales, analógicos e inteligentes demuestra su 
+                            versatilidad en aplicaciones de IoT, permitiendo el monitoreo en tiempo real sin necesidad de 
+                            plataformas externas.
                         </p>
 
                         <p id="referencias">
@@ -595,7 +286,7 @@
                         <p id="descargables">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Descargables -</h2>
                         <p class="fs-6 mb-4">Descargar datasheet ESP32 en documento PDF: <a href="files/esp32-wroom-32_datasheet_en.pdf">ESP32 Datasheet</a> </p>
-                        <p class="fs-6 mb-4">Descargar carpeta con todos los codigos: <a href="files/Codigos.zip">CODIGOS</a> </p>
+                        <p class="fs-6 mb-4">Descargar carpeta con todos los codigos: <a href="files/muchos_sensores.ino">CODIGOS</a> </p>
 
                 </div>
             </section>
