@@ -100,7 +100,7 @@
                             largo de la actividad, se configuraron diferentes topologías de red que permitieron observar el 
                             comportamiento de la comunicación entre varios equipos conectados en red, tanto de manera alámbrica 
                             como inalámbrica. Se implementaron redes separadas utilizando un switch y un router, conectando al 
-                            menos tres computadoras y un servidor web, con asignación automática de direcciones IP
+                            menos tres computadoras y un servidor web, con asignación automática de direcciones IP.
                         </p>
                                                                     
                         <p id="intro">
@@ -108,12 +108,12 @@
                         
                         <h2 class="fw-bolder mb-4 mt-5 fs-5" >- Introducción -</h2>
                         <p class="fs-6 mb-4">
-                            En esta práctica, se implementó un servidor local utilizando la herramienta XAMPP, que integra un 
-                            servidor Apache, permitiendo alojar sitios web de manera sencilla en una computadora personal. El 
-                            objetivo principal fue habilitar el acceso a dicho servidor desde distintos dispositivos conectados 
-                            a la misma red, como teléfonos móviles, tabletas o computadoras adicionales, para verificar la 
-                            correcta configuración y accesibilidad del servicio. Esto implicó la identificación de la dirección 
-                            IP del servidor, la configuración de puertos en el firewall y la comprobación de conectividad.
+                            Las redes de área local permiten la interconexión de múltiples dispositivos dentro de un entorno 
+                            limitado, facilitando el intercambio de información, el acceso a servicios y el uso compartido de 
+                            recursos. Los dispositivos de interconexión como switches y routers desempeñan un papel esencial, ya 
+                            que gestionan el tráfico de datos y permiten la comunicación eficiente entre los equipos conectados. 
+                            Se configuraron diferentes tipos de red —alámbrica, inalámbrica y combinada— integrando varios 
+                            dispositivos, incluidos un servidor web y computadoras con direcciones IP asignadas automáticamente. 
                         </p>
                       
                         
@@ -121,45 +121,60 @@
                         <h2 class="fw-bolder mb-4 mt-5 fs-5" >- Materiales -</h2>
                         <p class="fs-6 mb-4">
                             <ul>
-                                <li><b>Computadora como servidor</b></li>
-                                <li><b>Tres dispositivos diferentes</b></li>
+                                <li><b>6 dispositivos</b></li>
+                                <li><b>Cables directos</b></li>
+                                <li><b>Cables cruzados</b></li>
+                                <li><b>1 switch</b></li>
+                                <li><b>1 router</b></li>
                             </ul>
                         </p>
                         <p id="desarrollo">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Desarrollo -</h2>
                         <p class="fs-6 mb-4">
-                             La práctica comenzó con la descarga del paquete XAMPP desde el sitio oficial de Apache Friends. Una 
-                             vez descargado, se ejecutó el instalador como administrador para asegurar los permisos necesarios en 
-                             el sistema. Durante la instalación, se seleccionaron los módulos predeterminados, destacando Apache, 
-                             que es el servidor web utilizado para gestionar las solicitudes HTTP. Desde la configuración avanzada 
-                             del firewall, se creó una nueva regla de entrada para permitir el tráfico TCP a través del puerto 80.
+                             Para comenzar, se construyó una red utilizando únicamente un 
+                             switch como dispositivo de interconexión. Se conectaron tres computadoras y un servidor web 
+                             mediante cables Ethernet directos, asegurando que todos los dispositivos estuvieran físicamente 
+                             enlazados al switch. Para verificar la correcta configuración de la red, se utilizó el comando 
+                             ipconfig en cada equipo con el fin de identificar sus direcciones IP y confirmar que se encontraban 
+                             dentro del mismo rango de red. Posteriormente, se utilizaron comandos ping desde cada computadora 
+                             hacia las demás y al servidor para comprobar la conectividad.
                         </p>
+                    
+                        <p class="fs-6 mb-4">
+                            Despues, se trabajó con una red centrada en un router. El servidor que se utilizó en la 
+                            red anterior se conectó directamente al router mediante un cable de red, mientras que tres 
+                            dispositivos móviles se unieron a la red de manera inalámbrica. Desde el servidor se realizó la 
+                            verificación de conectividad hacia los dispositivos móviles usando comandos ping, observando una 
+                            respuesta satisfactoria.
+                        </p>
+                        <center><figure class="mb-4"><img class="img-fluid rounded" width="600px" src="img/router.jpg" alt="..." /></figure></center>
+
 
                         <p class="fs-6 mb-4">
-                            Para permitir que otros dispositivos accedieran al servidor, se identificó la dirección IP local de 
-                            la computadora que ejecuta XAMPP. Esto se logró abriendo la terminal de comandos y ejecutando el 
-                            comando ipconfig. En los resultados, se localizó la sección correspondiente a la interfaz de red 
-                            activa y se anotó la dirección IPv4.
-                        </p>
-
-                        <p class="fs-6 mb-4">
-                            Con la dirección IP del servidor y el puerto habilitado, se procedió a realizar la prueba de 
-                            conectividad desde tres dispositivos diferentes conectados a la misma red Wi-Fi. En cada uno de 
-                            ellos, se abrió un navegador web y se ingresó la dirección IP obtenida anteriormente. 
+                            Para finalizar, se procedió a integrar las dos redes previas, conectando el switch al router mediante 
+                            un cable directo o cruzado, según la configuración de los puertos. Esta conexión permitió unificar 
+                            los dispositivos conectados por cable al switch con los dispositivos móviles conectados al router de 
+                            forma inalámbrica. Al establecer esta conexión, se observó que las direcciones IP de las computadoras 
+                            cambiaron, adaptándose a la nueva configuración general de red administrada por el router. 
+                            Desde el servidor se verificó la conectividad hacia los seis dispositivos conectados, utilizando 
+                            nuevamente comandos ping. Por último, se comprobó que todos los dispositivos, tanto alámbricos como 
+                            inalámbricos, podían acceder simultáneamente a la página web alojada en el servidor.
                         </p>
                         
-                        <center><figure class="mb-4"><img class="img-fluid rounded" width="600px" src="img/xampp download.png" alt="..." /></figure></center>
-                        <center><figure class="mb-4"><img class="img-fluid rounded" width="600px" src="img/xampp prac6.png" alt="..." /></figure></center>
-                        <center><figure class="mb-4"><img class="img-fluid rounded" width="600px" src="img/prac6.png" alt="..." /></figure></center>
-                        <center><figure class="mb-4"><img class="img-fluid rounded" width="600px" src="img/dispositivosprac6.jpg" alt="..." /></figure></center>
+                        <center><figure class="mb-4"><img class="img-fluid rounded" width="600px" src="img/router.jpg" alt="..." /></figure></center>
+                        <center><figure class="mb-4"><img class="img-fluid rounded" width="600px" src="img/muchospings.png" alt="..." /></figure></center>
+                        <center><figure class="mb-4"><img class="img-fluid rounded" width="600px" src="img/muhcosdispositivos.jpg" alt="..." /></figure></center>
 
                         <p id="conclusiones">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Conclusiones -</h2>
                         <p class="fs-6 mb-4">
-                            La práctica permitió comprender y aplicar los pasos necesarios para instalar y configurar un servidor 
-                            local utilizando XAMPP en un entorno Windows. Se logró habilitar correctamente el servicio Apache, 
-                            identificar la dirección IP del servidor para verificar el acceso desde distintos dispositivos 
-                            conectados a la misma red. 
+                            La práctica realizada permitió afianzar los conocimientos teóricos y prácticos sobre la construcción 
+                            y funcionamiento de redes de área local mediante el uso de switches y routers. La asignación 
+                            automática de direcciones IP, la selección adecuada de cables y la verificación de la conectividad 
+                            con herramientas como el comando PING y el acceso a un servidor web fueron elementos clave para 
+                            validar el correcto funcionamiento de la red. La conexión exitosa de dispositivos alámbricos e 
+                            inalámbricos dentro de un mismo entorno de red demostró la importancia de una configuración 
+                            estructurada y bien planificada. 
                         </p>
                 </div>
             </section>
