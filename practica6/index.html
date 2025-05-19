@@ -95,12 +95,8 @@
                     <p id="resumen">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5" >- Resumen -</h2>
                         <p class="fs-6 mb-4">
-                            La presente práctica tuvo como finalidad conocer, identificar y verificar el funcionamiento de los 
-                            cables de red estructurado, enfocándose en los tipos directo y cruzado. Se investigaron las 
-                            configuraciones correspondientes a los estándares T568A y T568B, así como el procedimiento para 
-                            probar su funcionamiento utilizando un probador de cables. Como parte de la actividad práctica, se 
-                            fabricaron tres cables de red directos y tres cruzados, comprobando que cada uno cumpliera con las 
-                            normas establecidas y funcionara correctamente.
+                            En la presente práctica se creó un servidor local utilizando XAMPP y se probó el acceso al servidor 
+                            con distintos dispositivos diferentes a la computadora que opera el programa.
                         </p>
                                                                     
                         <p id="intro">
@@ -108,50 +104,46 @@
                         
                         <h2 class="fw-bolder mb-4 mt-5 fs-5" >- Introducción -</h2>
                         <p class="fs-6 mb-4">
-                            El cableado estructurado constituye la base física de una red de datos, permitiendo la comunicación entre diversos 
-                            dispositivos de forma organizada y eficiente. Dentro de este sistema, los cables UTP son los más 
-                            comunes, especialmente en instalaciones Ethernet, gracias a su rendimiento, bajo costo y facilidad de 
-                            implementación.
+                            En esta práctica, se implementó un servidor local utilizando la herramienta XAMPP, que integra un 
+                            servidor Apache, permitiendo alojar sitios web de manera sencilla en una computadora personal. El 
+                            objetivo principal fue habilitar el acceso a dicho servidor desde distintos dispositivos conectados 
+                            a la misma red, como teléfonos móviles, tabletas o computadoras adicionales, para verificar la 
+                            correcta configuración y accesibilidad del servicio. Esto implicó la identificación de la dirección 
+                            IP del servidor, la configuración de puertos en el firewall y la comprobación de conectividad.
                         </p>
-                        <p class="fs-6 mb-4">
-                            Los cables de red pueden configurarse bajo los estándares T568A y T568B, los cuales determinan el 
-                            orden de los hilos dentro del conector RJ45. Dependiendo de cómo se conecten sus extremos, se pueden 
-                            formar cables directos o cruzados, que cumplen funciones distintas dentro de la red.
-                        </p>
+                      
                         
                         <p id="materiales">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5" >- Materiales -</h2>
                         <p class="fs-6 mb-4">
                             <ul>
-                                <li><b>Cable de red para armar</b></li>
-                                <li><b>Cabezales de ethernet</b></li>
-                                <li><b>Pinza ponchadora de cable de red </b></li>
+                                <li><b>Computadora como servidor</b></li>
+                                <li><b>Tres dispositivos diferentes</b></li>
                             </ul>
                         </p>
                         <p id="desarrollo">
                         <h2 class="fw-bolder mb-4 mt-5 fs-5">- Desarrollo -</h2>
                         <p class="fs-6 mb-4">
-                             Se estudiaron los estándares T568A y T568B, los cuales definen el orden de los hilos de colores 
-                             dentro del conector RJ45 en cables UTP. El estándar T568A es común en instalaciones residenciales, 
-                             mientras que el T568B se utiliza con mayor frecuencia en entornos comerciales. A partir de estos 
-                             estándares, se pueden formar dos tipos de cables: el cable directo, que utiliza el mismo estándar en 
-                             ambos extremos y sirve para conectar dispositivos distintos, y el cable cruzado, que combina T568A en 
-                             un extremo y T568B en el otro, permitiendo la conexión entre dispositivos similares. Luego del armado, 
-                             se utilizó un probador de red para verificar la continuidad y el orden correcto de los hilos.
+                             La práctica comenzó con la descarga del paquete XAMPP desde el sitio oficial de Apache Friends. Una 
+                             vez descargado, se ejecutó el instalador como administrador para asegurar los permisos necesarios en 
+                             el sistema. Durante la instalación, se seleccionaron los módulos predeterminados, destacando Apache, 
+                             que es el servidor web utilizado para gestionar las solicitudes HTTP. Desde la configuración avanzada 
+                             del firewall, se creó una nueva regla de entrada para permitir el tráfico TCP a través del puerto 80.
                         </p>
-                        <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Cable directo</b></h1>
-                            <p class="fs-6 mb-4">
-                            <ol>
-                                <li>Pelar el cable con cuidado</li>
-                                <li>Separar los cables y estirarlos</li>
-                                <li>Ordenar los cables</li>
-                                <li>Cortarlos e introducirlos con cuidado en la clavija RJ-45</li>
-                                <li>Fijar con la ponchadora</li>
-                                <li>Repetir con el otro extremo y comprobar</li>
-                            </ol>
-                            </p>
-                            <center><figure class="mb-4"><img class="img-fluid rounded" width="600px" src="img/cabledirecto.png" alt="..." /></figure></center>
-                            
+
+                        <p class="fs-6 mb-4">
+                            Para permitir que otros dispositivos accedieran al servidor, se identificó la dirección IP local de 
+                            la computadora que ejecuta XAMPP. Esto se logró abriendo la terminal de comandos y ejecutando el 
+                            comando ipconfig. En los resultados, se localizó la sección correspondiente a la interfaz de red 
+                            activa y se anotó la dirección IPv4.
+                        </p>
+
+                        <p class="fs-6 mb-4">
+                            Con la dirección IP del servidor y el puerto habilitado, se procedió a realizar la prueba de 
+                            conectividad desde tres dispositivos diferentes conectados a la misma red Wi-Fi. En cada uno de 
+                            ellos, se abrió un navegador web y se ingresó la dirección IP obtenida anteriormente. 
+                        </p>
+                        
                         <h1 class="fw-bolder2 mb-4 mt-5 fs-5"><b>Cable cruzado</b></h1>
                             <p class="fs-6 mb-4">
                             <ol>
